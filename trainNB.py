@@ -1,19 +1,16 @@
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.pipeline import Pipeline
-
-from nltk.corpus import stopwords
-
-from sklearn.model_selection import train_test_split
-from sklearn import naive_bayes
-from sklearn.metrics import accuracy_score
-
 import pandas as pd
 import numpy as np
 import pickle
 import re
 
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
+from sklearn import naive_bayes
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 
+from nltk.corpus import stopwords
 
 #importing dataset
 df = pd.read_csv('reviews.csv')
@@ -39,46 +36,32 @@ df['edit_reviews'] = edit_reviews
 X = df['edit_reviews']
 y = df['Liked']
 
-X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3,random_state=45) # 70% training and 30% test
+ # 70% training and 30% test
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3,random_state=45)
 
-#using count vectorizer method to count number of unique words
-count_vectorizer = CountVectorizer()
-counts = count_vectorizer.fit_transform(X_train)
-print ("Number of unique words in the train dataset: {}".format(
-    len(count_vectorizer.get_feature_names())
-))
-
-
-preprocessing_pipeline = Pipeline([
-    ("Count Vectorization", CountVectorizer()),
-])
-filtered_features = preprocessing_pipeline.fit_transform(X_train)
+#forming pipeline with vectorizer and model
+pipelineNB = Pipeline([('vectorizer', CountVectorizer()),
+                    ('modelNB', naive_bayes.MultinomialNB())])
 
 #training model
-nb = naive_bayes.MultinomialNB()
-nb.fit(filtered_features, y_train)
+trainmodel = pipelineNB.fit(X_train, y_train)
 
+#cross validation
+scores = cross_val_score(pipelineNB, X_train, y_train, cv=10)
+print(scores)
+print("Accuracy: %0.2f " % (scores.mean()))
 
-# filename1 = 'NBmodel.sav'
-# pickle.dump(nb, open(filename1, 'wb'))
+#saving trained model in pickle
+filename1 = 'NBmodel.sav'
+pickle.dump(trainmodel, open(filename1, 'wb'))
+# pipelineNB.fit_transform(X, y)  
 
-# filename2 = 'vectorizer.sav'
-# pickle.dump(count_vectorizer, open(filename2, 'wb'))
+#loading model from pickle
+loaded_model = pickle.load(open(filename1, 'rb'))
 
-#testing model
-# loaded_model1 = pickle.load(open(filename1, 'rb'))
-# loaded_model2 = pickle.load(open(filename2, 'rb'))
+#testing model with saved model
+testmodel = loaded_model.predict(X_test)
 
-# countstest = loaded_model2.fit_transform(X_test)
-# print ("Number of unique words in the ttest dataset: {}".format(
-#     len(count_vectorizer.get_feature_names())
-# ))
-# test_predictions = loaded_model1.predict(countstest)
-
-
-
-test_features = preprocessing_pipeline.transform(X_test)
-test_predictions = nb.predict(test_features)
-
-accuracy = accuracy_score(y_test, test_predictions)
+#evaluating the model
+accuracy = accuracy_score(y_test, testmodel)
 print("Test Accuracy: {:.1f}%".format(accuracy*100))
