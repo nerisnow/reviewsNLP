@@ -123,7 +123,7 @@ score_near= cross_val_score(trainmodel_knear, X_train, y_train, cv=10)
 print(score_near)
 print("Accuracy: %0.2f " % (score_near.mean()))
 
-k_meansfile = 'k_means.sav'
+k_meansfile = 'k_near.sav'
 pickle.dump(trainmodel_knear, open(k_meansfile, 'wb'))
 loaded_knear = pickle.load(open(k_meansfile, 'rb'))
 trainmodel_knear = loaded_knear.predict(X_test)
