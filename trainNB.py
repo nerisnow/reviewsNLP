@@ -122,7 +122,7 @@ print(scoresrf)
 print("Accuracy: %0.2f " % (scoresrf.mean()))
 
 
-filenamerf = 'randomforestmodel.sav'
+filenamerf = 'kmeansmodel.sav'
 pickle.dump(trainmodelrf, open(filenamerf, 'wb'))
 
 loaded_rf_model = pickle.load(open(filenamerf, 'rb'))
