@@ -11,6 +11,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import cross_val_score
 
 from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
 
 #importing dataset
 df = pd.read_csv('reviews.csv')
@@ -39,6 +41,11 @@ y = df['Liked']
  # 70% training and 30% test
 X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3,random_state=45)
 
+
+##Using the Naive Bayes Algorithm
+# -----------------------------------
+
+print("Using Navie Bayes")
 #forming pipeline with vectorizer and model
 pipelineNB = Pipeline([('vectorizer', CountVectorizer()),
                     ('modelNB', naive_bayes.MultinomialNB())])
@@ -64,4 +71,63 @@ testmodel = loaded_model.predict(X_test)
 
 #evaluating the model
 accuracy = accuracy_score(y_test, testmodel)
-print("Test Accuracy: {:.1f}%".format(accuracy*100))
+print("Test Accuracy using Navies Bayes: {:.1f}%".format(accuracy*100))
+
+
+
+##Using the Random Forest Algorithm
+# -----------------------------------
+
+print("Using Random Forest")
+from sklearn.ensemble import RandomForestClassifier
+#forming pipeline using the random forest
+pipelineRf = Pipeline([('vectorizer', CountVectorizer()),
+                    ('modelRF', RandomForestClassifier())])
+
+#training model
+trainmodelrf = pipelineRf.fit(X_train, y_train)
+
+#cross Validation
+scoresrf = cross_val_score(pipelineRf, X_train, y_train, cv=10)
+print(scoresrf)
+print("Accuracy: %0.2f " % (scoresrf.mean()))
+
+
+#saving trained model in pickle
+
+filenamerf = 'randomforestmodel.sav'
+pickle.dump(trainmodelrf, open(filenamerf, 'wb'))
+
+#testing model with saved model
+
+loaded_rf_model = pickle.load(open(filenamerf, 'rb'))
+
+trainmodelrf = loaded_model.predict(X_test)
+accuracyrf = accuracy_score(y_test, trainmodelrf)
+print("Test Accuracy Using Random Forest: {:.1f}%".format(accuracyrf*100))
+
+
+##Using the K-means Algorithm
+# -----------------------------------
+
+print("Using K-means Algorithm")
+
+from sklearn.cluster import KMeans
+
+pipeline_kmeans = Pipeline([('vectorizer', CountVectorizer()),
+                    ('modelRF', KMeans(n_clusters=2, random_state=0))])
+
+scoresrf = cross_val_score(pipelineRf, X_train, y_train, cv=10)
+print(scoresrf)
+print("Accuracy: %0.2f " % (scoresrf.mean()))
+
+
+filenamerf = 'randomforestmodel.sav'
+pickle.dump(trainmodelrf, open(filenamerf, 'wb'))
+
+loaded_rf_model = pickle.load(open(filenamerf, 'rb'))
+
+trainmodelrf = loaded_model.predict(X_test)
+
+accuracyrf = accuracy_score(y_test, trainmodelrf)
+print("Test Accuracy using K-means Algorithm: {:.1f}%".format(accuracyrf*100))
