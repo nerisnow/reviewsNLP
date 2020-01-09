@@ -107,7 +107,6 @@ accuracyrf = accuracy_score(y_test, trainmodelrf)
 print("Test Accuracy Using Random Forest: {:.1f}%".format(accuracyrf*100))
 
 
-
 ##Using the K-Nearest Algorithm
 # -----------------------------------
 
