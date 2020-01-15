@@ -1,9 +1,11 @@
 
-#GettiNG AND PREDECTIONG ReSULT
+#Getting input from user and predicting it
 import pandas as pd
 import numpy as np
 import pickle
 import re
+from sklearn.feature_extraction.text import CountVectorizer
+from trainNB import vect
 
 from nltk.corpus import stopwords
 import nltk
@@ -19,20 +21,7 @@ dfObj = pd.DataFrame(columns=['Review'])
 
 dfObj = dfObj.append({'Review': predict_me}, ignore_index=True)
 
-def stopword(review):
-    lowerwords=review.lower()
-    words = re.split("\s+", lowerwords)
-    stop_words = set(stopwords.words('english'))
-    filterwords=[w for w in words if not w in stop_words]
-    return " ".join(f for f in filterwords)
-
-edit_opinion = []
-for i in range(0,len(dfObj['Review'])):
-    edit_opinion.append(stopword(dfObj['Review'][i]))
-print(edit_opinion)
-
-
-dfObj['edit_opinion'] = edit_opinion
-check = dfObj["edit_opinion"]
+fitted = vect.transform(dfObj['Review'])
+check = fitted.toarray()
 result = loaded_model.predict(check)
 print(result)
