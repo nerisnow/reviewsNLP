@@ -1,4 +1,4 @@
-# Restaurant Review Analysis Using Machine Learning ModelS
+# Restaurant Review Analysis Using Machine Learning Models
 
 This repository includes a project on Restaurant Review Analysis using Machine Learning Models. As our baseline model, Naive Bayes Classifier is used for the classification of positive and negative reviews..
 
