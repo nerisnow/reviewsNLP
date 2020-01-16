@@ -1,7 +1,6 @@
 ##file for saved training models
 
 import pandas as pd
-import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 
@@ -10,26 +9,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
-from sklearn.metrics import accuracy_score
-
 
 #importing dataset
 df = pd.read_csv('reviews.csv')
 print(df.groupby('Liked').count())
-
-#visualizing the dataset
-df.hist(column='Liked')
-plt.xlabel('Type of review')
-plt.ylabel('No.of reviews')
-plt.show()
-
-
 
 #defining variables
 X = df['Review']
@@ -99,14 +87,3 @@ KNNmodel.fit(X_train_fit, y_train)
 #saving trained model in pickle
 filename5 = 'KNNmodel.sav'
 pickle.dump(KNNmodel, open(filename5, 'wb'))
-
-##Using the Knearest neighbour Algorithm
-# -----------------------------------
-
-print("USING DESICISION TREE CLASSIFIER")
-
-CARTmodel = DecisionTreeClassifier()
-CARTmodel.fit(X_train_fit, y_train)
-#saving trained model in pickle
-filename6 = 'CARTmodel.sav'
-pickle.dump(CARTmodel, open(filename6, 'wb'))
