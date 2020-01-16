@@ -1,4 +1,4 @@
-# Restaurant Review Analysis Using Machine Learning Models
+# Sentiment Analysis of Reviews Using Machine Learning Models
 
 This repository includes a project on Sentiment Analysis of Reviews using Machine Learning Models. As our baseline model, Naive Bayes Classifier is used for the classification of positive and negative reviews. Machine learning models used here are:
 1. Logistic Regression
