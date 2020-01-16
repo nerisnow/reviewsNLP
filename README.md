@@ -27,6 +27,11 @@ Run the following code in the terminal to run the cross validation tests and eva
 
 `python3 cross_val.py`
 
+## Running the test for given user input
+Run the following code in the terminal to test the model for your user input.
+
+`python3 predicting.py`
+
 ## Description
 `NBModel.sav` is the trained Naive Bayes model saved in a file.
 `LRModel.sav` is the trained Logistic Regression model saved in a file.
@@ -37,6 +42,9 @@ Run the following code in the terminal to run the cross validation tests and eva
 `trainfile.py` contains the code to training the train dataset.
 `testfile.py` contains the code to testing in the test dataset.
 `cross_val.py` contains the code to perform cross validation.
+`cross_val.py` contains the code to test model on custom user input.
+
+
 
 `reviews.csv` is the dataset used for the project.
 
