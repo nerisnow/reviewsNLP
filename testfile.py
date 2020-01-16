@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 
 
 #importing dataset
@@ -37,7 +38,7 @@ X_test_fit = vect_test.toarray()
 # Make predictions on test dataset using naive bayes classifier
 
 #loading model from pickle
-NB_model = pickle.load(open('NBmodel.sav', 'rb'))
+NB_model = pickle.load(open('KNNmodel.sav', 'rb'))
 NB_model.fit(X_train_fit, y_train)
 predictions = NB_model.predict(X_test_fit)
 
@@ -45,3 +46,4 @@ predictions = NB_model.predict(X_test_fit)
 # Evaluate predictions
 print(accuracy_score(y_test, predictions))
 print(confusion_matrix(y_test, predictions))
+print(classification_report(y_test,predictions))
